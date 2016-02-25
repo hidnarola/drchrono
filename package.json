@@ -54,6 +54,7 @@
     "swig": "latest",
     "view-helpers": "latest",
     "express-session": "latest",
+    "swagger-node-express": "latest"
   },
   "devDependencies": {
     "del": "latest",
