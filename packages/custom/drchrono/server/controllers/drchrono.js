@@ -16,22 +16,58 @@ var mongoose = require('mongoose'),
 	var session = require('express-session');
 	var client_id = '6jmNpGa4k2vJ9vyqX0dE2W1n2qhk1DbmSGdEi5mv';
 	var client_secret = 'SzHkA6VpMiRpuaXyvsxfcboYFxIMqBLBxvfksLgK7mJ10k8ugA5gonWHphT3Q6khN5UyBzoRqbm5R9IJUXKsYfl2f9iOXiX7oxZvF6uDzrou0P04oC7vXcKDwU6HYxBX';
-	var authorization_key = 'Ka6V4FDDwwaAPCf4r23ymTvy3wa6Le';
 	var redirect_uri = 'http://54.165.114.126/callback1';
 
 module.exports = function(Drchrono) {
 	return {
 		get_all_doctors: function(req, res) {
-			/*var patients = [
+			/*var doctors = [
+				{'doctor_id':'94025'},
+				{'doctor_id':'94764'}
+			];
+			for(var i in doctors){
+				var doctor = new Doctorm({
+					doctor_id : doctors[i].doctor_id,
+				});
+
+				doctor.save(function(err) {
+					if (err) {
+						return res.status(500).json({
+							error: 'Cannot save the post'
+						});
+					}
+					res.json(doctor);
+				});
+			}
+			var patients = [
+				{'patient_id': '58524917'},
+				{'patient_id': '58524918'},
+				{'patient_id': '58524919'}
+			];
+			for(var i in patients){
+				var patient = new Patientm({
+					patient_id : patients[i].patient_id
+				});
+
+				patient.save(function(err) {
+					if (err) {
+						return res.status(500).json({
+							error: 'Cannot save the post'
+						});
+					}
+					res.json(patient);
+				});
+			}
+			var doctor_patients = [
 				{'doctor_id':'94025', 'patient_id': '58524917'},
 				{'doctor_id':'94025', 'patient_id': '58524918'},
 				{'doctor_id':'94025', 'patient_id': '58524919'},
 				{'doctor_id':'94764', 'patient_id': '58524917'}
 			];
-			for(var i in patients){
+			for(var i in doctor_patients){
 				var doctor = new Doctor_patientm({
-					doctor_id : patients[i].doctor_id,
-					patient_id : patients[i].patient_id
+					doctor_id : doctor_patients[i].doctor_id,
+					patient_id : doctor_patients[i].patient_id
 				});
 
 	            doctor.save(function(err) {
@@ -44,7 +80,6 @@ module.exports = function(Drchrono) {
 	            });
 			}
             return false;*/
-            console.log(req);
 			request({
 		        method: 'GET',
 		        url: 'https://drchrono.com/api/doctors',
@@ -78,7 +113,7 @@ module.exports = function(Drchrono) {
 		        url: 'https://drchrono.com/api/patients',
 		        // url: 'https://drchrono.com/api/patients?doctor=' + doctorId,
 		        headers: {
-	        		"Authorization" : "Bearer " + authorization_key,
+	        		"Authorization" : "Bearer " + req.cookies.token,
 	        		"Content-Type" : "application/json"
 	        	},
 	        	json: true,
@@ -108,7 +143,7 @@ module.exports = function(Drchrono) {
 		        method: 'GET',
 		        url: 'https://drchrono.com/api/patients?doctor=' + doctorId,
 		        headers: {
-	        		"Authorization" : "Bearer " + authorization_key,
+	        		"Authorization" : "Bearer " + req.cookies.token,
 	        		"Content-Type" : "application/json"
 	        	},
 	        	json: true,
@@ -120,11 +155,9 @@ module.exports = function(Drchrono) {
 		        	var return_json = [];
 		        	for(var i in results){
 		        		if( results[i].id == patientId ){
-		        			console.log(patientId);
 		        			return_json = results[i];
 		        		}
 		        	}
-		        	console.log(return_json);
         			res.json(return_json);
 		        }
 		    });

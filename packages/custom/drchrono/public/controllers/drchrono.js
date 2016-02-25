@@ -22,7 +22,7 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 					var access_token = response.access_token;
 					$cookies.put('token', access_token);
 	    			$scope.wait_line = 'You will redirect to main site soon. Please wait for a while.';
-					$location.path('/');
+					$location.url('/');
 	    		} else {
 	    			$scope.wait_line = 'Sorry!! Your code is expired. Please try again.';
 	    		}
@@ -88,8 +88,6 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 			if( db_request.status == 200 ){
 				db_patients = JSON.parse(db_request.response);
 			}
-			console.log('patients = ', patients);
-			console.log('db_patients = ', db_patients);
 			var patient_list = [];
 			for (var i in db_patients) {
 				for (var j in patients) {
@@ -122,8 +120,12 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 			});
 	    };
 
-	    $scope.return_doctor = function(doctorId){
+	    $scope.return_patient_list = function(doctorId){
 	    	$location.path('patient_list/' + doctorId);
+	    };
+
+	    $scope.return_doctor = function(doctorId){
+	    	$location.path('/');
 	    };
 	}
 ]);

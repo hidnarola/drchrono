@@ -17,12 +17,12 @@ Drchrono.register(function(app, auth, database) {
   Drchrono.routes(app, auth, database);
 
   //We are adding a link to the main menu for all authenticated users
-  Drchrono.menus.add({
+  /*Drchrono.menus.add({
     title: 'List of Doctors',
     link: 'home',
     roles: ['authenticated'],
     menu: 'main'
-  });
+  });*/
   
   Drchrono.aggregateAsset('css', 'drchrono.css');
 

@@ -1,17 +1,19 @@
 <div class="" data-ng-controller="DrchronoController" ng-init="get_all_doctors()">
 	<h1>Select Doctor</h1>
-	<div class="col-xs-12">
+	<div class="form-outer">
 		<form name="myForm" novalidate>
-			<div class="col-xs-10">
-				<select class="form-control" ng-model="dr.id" id="doctor_list" name="doctor_list" required="">
-					<option value="">Select Doctor</option>
-					<option value="{{doctor.id}}" data-ng-repeat="doctor in doctors">{{doctor.first_name}} {{doctor.last_name}}</option>
-				</select>
-				<div ng-show="myForm.$submitted || myForm.doctor_list.$touched">
+			<div class="form-inner">
+				<div class="select-wrapper">
+					<select class="form-control" ng-model="dr.id" id="doctor_list" name="doctor_list" required="">
+						<option value="">Select Doctor</option>
+						<option value="{{doctor.id}}" data-ng-repeat="doctor in doctors">{{doctor.first_name}} {{doctor.last_name}}</option>
+					</select>
+				</div>
+				<div ng-show="myForm.$submitted || myForm.doctor_list.$touched" class="error_msg">
 					<div ng-show="myForm.doctor_list.$error.required">Please select doctor.</div>
 				</div>
 			</div>
-			<button type="submit" class="col-sm-2 btn btn-primary" ng-click="get_patient_list(dr)">Get Patients</button>
+			<button type="submit" class="btn btn-primary" ng-click="get_patient_list(dr)">Get Patients</button>
 		</form>
 	</div>
 </div>
