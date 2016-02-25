@@ -9,6 +9,8 @@ module.exports = function(Drchrono, app, auth, database) {
     .get(drchrono.get_all_doctors);
   app.route('/api/drchrono/get_all_dbdoctors')
     .get(drchrono.get_all_dbdoctors);
+  app.route('/api/drchrono/get_access_url')
+    .get(drchrono.get_access_url);
 
   app.route('/api/drchrono/get_all_patients/:doctorId')
     .get(drchrono.get_all_patients);

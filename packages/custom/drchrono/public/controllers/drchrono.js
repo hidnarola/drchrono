@@ -9,10 +9,11 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 	    };
 
 		$scope.get_code = function(){
-			var client_id = '6jmNpGa4k2vJ9vyqX0dE2W1n2qhk1DbmSGdEi5mv';
-			var redirect_uri = 'http://54.165.114.126/callback1';
-			var url = 'https://drchrono.com/o/authorize/?redirect_uri=' + redirect_uri + '&response_type=code&client_id=' + client_id;
-			$scope.url = url;
+			$http.get('/api/drchrono/get_access_url').success(function(response) {
+				$scope.url = response;
+			}).error(function(data) {
+				// console.log(data);
+			});
 	    };
 
 	    $scope.get_access_token = function(){
@@ -63,69 +64,93 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 	    };
 
 	    $scope.get_patient_list = function(doctor){
-			if(doctor){
-				var id = doctor.id;
-				$location.path('patient_list/' + id);
-			}
+	    	if( typeof($cookies.get('token')) != 'undefined' ){
+				if(doctor){
+					var id = doctor.id;
+					$location.path('patient_list/' + id);
+				}
+			} else {
+				$location.path('get_code');
+	    	}
 	    };
 
 	    $scope.get_all_patients = function(){
-	    	var id = $stateParams.doctorId;
-	    	var api_request = new XMLHttpRequest();
-		 	var db_request = new XMLHttpRequest();
+	    	if( typeof($cookies.get('token')) != 'undefined' ){
+		    	var id = $stateParams.doctorId;
+		    	var api_request = new XMLHttpRequest();
+			 	var db_request = new XMLHttpRequest();
 
-		 	api_request.open("GET", '/api/drchrono/get_all_patients/' + id, false);
-			api_request.send();
-		 	var patients = '';
-			if( api_request.status == 200 ){
-				patients = JSON.parse(api_request.response);
-				patients = patients.results;
-			}
+			 	api_request.open("GET", '/api/drchrono/get_all_patients/' + id, false);
+				api_request.send();
+			 	var patients = '';
+				if( api_request.status == 200 ){
+					patients = JSON.parse(api_request.response);
+					patients = patients.results;
+				}
 
-			db_request.open("GET", '/api/drchrono/get_all_dbpatients/' + id, false);
-			db_request.send();
-		 	var db_patients = '';
-			if( db_request.status == 200 ){
-				db_patients = JSON.parse(db_request.response);
-			}
-			var patient_list = [];
-			for (var i in db_patients) {
-				for (var j in patients) {
-					if( patients[j].id == db_patients[i].patient_id ){
-						patient_list.push(patients[j]);
+				db_request.open("GET", '/api/drchrono/get_all_dbpatients/' + id, false);
+				db_request.send();
+			 	var db_patients = '';
+				if( db_request.status == 200 ){
+					db_patients = JSON.parse(db_request.response);
+				}
+				var patient_list = [];
+				for (var i in db_patients) {
+					for (var j in patients) {
+						if( patients[j].id == db_patients[i].patient_id ){
+							patient_list.push(patients[j]);
+						}
 					}
 				}
-			}
-			$scope.patients = patient_list;
+				$scope.patients = patient_list;
+			} else {
+				$location.path('get_code');
+	    	}
 	    };
 
 	    $scope.get_patient_detail = function(patient){
-			if(patient){
-				var ids = patient.ids;
-				var ids = ids.split('|');
-				var doctorId = ids[0];
-				var patientId = ids[1];
-				$location.path('patient/' + doctorId + '/' + patientId);
-			}
+	    	if( typeof($cookies.get('token')) != 'undefined' ){
+				if(patient){
+					var ids = patient.ids;
+					var ids = ids.split('|');
+					var doctorId = ids[0];
+					var patientId = ids[1];
+					$location.path('patient/' + doctorId + '/' + patientId);
+				}
+    		} else {
+				$location.path('get_code');
+	    	}
 	    };
 
 	    $scope.patient_detail = function(){
-	    	var doctorId = $stateParams.doctorId;
-	    	var patientId = $stateParams.patientId;
-	    	$scope.doctorId = doctorId;
-	    	$http.get('/api/drchrono/patient_detail/' + doctorId + '/' + patientId).success(function(response) {
-				$scope.patient = response;
-			}).error(function(data) {
-				// console.log(data);
-			});
+	    	if( typeof($cookies.get('token')) != 'undefined' ){
+		    	var doctorId = $stateParams.doctorId;
+		    	var patientId = $stateParams.patientId;
+		    	$scope.doctorId = doctorId;
+		    	$http.get('/api/drchrono/patient_detail/' + doctorId + '/' + patientId).success(function(response) {
+					$scope.patient = response;
+				}).error(function(data) {
+					// console.log(data);
+				});
+			} else {
+				$location.path('get_code');
+	    	}
 	    };
 
 	    $scope.return_patient_list = function(doctorId){
-	    	$location.path('patient_list/' + doctorId);
+	    	if( typeof($cookies.get('token')) != 'undefined' ){
+	    		$location.path('patient_list/' + doctorId);
+    		} else {
+				$location.path('get_code');
+	    	}
 	    };
 
 	    $scope.return_doctor = function(doctorId){
-	    	$location.path('/');
+	    	if( typeof($cookies.get('token')) != 'undefined' ){
+	    		$location.path('/');
+    		} else {
+				$location.path('get_code');
+	    	}
 	    };
 	}
 ]);

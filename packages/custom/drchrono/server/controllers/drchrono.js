@@ -14,9 +14,9 @@ var mongoose = require('mongoose'),
 	_ = require('lodash');
 
 	var session = require('express-session');
-	var client_id = '6jmNpGa4k2vJ9vyqX0dE2W1n2qhk1DbmSGdEi5mv';
-	var client_secret = 'SzHkA6VpMiRpuaXyvsxfcboYFxIMqBLBxvfksLgK7mJ10k8ugA5gonWHphT3Q6khN5UyBzoRqbm5R9IJUXKsYfl2f9iOXiX7oxZvF6uDzrou0P04oC7vXcKDwU6HYxBX';
-	var redirect_uri = 'http://54.165.114.126/callback1';
+	var client_id = process.env.client_id;
+	var client_secret = process.env.client_secret;
+	var redirect_uri = process.env.redirect_uri;
 
 module.exports = function(Drchrono) {
 	return {
@@ -183,6 +183,10 @@ module.exports = function(Drchrono) {
         			res.json(body);
 		        }
 		    });
+		},
+		get_access_url: function(req, res) {
+			var url = 'https://drchrono.com/o/authorize/?redirect_uri=' + redirect_uri + '&response_type=code&client_id=' + client_id;
+			res.json(url);
 		},
 	};
 }
