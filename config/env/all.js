@@ -1,8 +1,8 @@
 'use strict';
 
-var path = require('path'),
-  rootPath = path.normalize(__dirname + '/../..');
-
+var path = require('path');
+  var rootPath = path.normalize(__dirname + '/../..');
+var dotenv = require('dotenv').config({path: path.join(rootPath, '.env')});
 module.exports = {
   root: rootPath,
   http: {
