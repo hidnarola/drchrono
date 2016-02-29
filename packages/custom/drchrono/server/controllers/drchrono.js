@@ -17,6 +17,7 @@ var mongoose = require('mongoose'),
 	var client_id = process.env.client_id;
 	var client_secret = process.env.client_secret;
 	var redirect_uri = process.env.redirect_uri;
+	var refresh_token = process.env.refresh_token;
 
 module.exports = function(Drchrono) {
 	return {
@@ -174,6 +175,27 @@ module.exports = function(Drchrono) {
 	        		'client_secret' : client_secret,
 	        		'redirect_uri' : redirect_uri,
 	        		'code' : code
+	        	}
+		    }, function(err, response, body) {
+		        if(err) {
+		            res.json(err);
+		        } else {
+		        	//req.session.token = body.access_token;
+        			res.json(body);
+		        }
+		    });
+		},
+		get_access_token_refresh: function(req, res) {
+			console.log('here');
+			request({
+		        method: 'POST',
+		        url: 'https://drchrono.com/o/token/',
+	        	json: true,
+	        	formData : {
+	        		'grant_type' : 'refresh_token',
+	        		'client_id' : client_id,
+	        		'client_secret' : client_secret,
+	        		'refresh_token' : refresh_token,
 	        	}
 		    }, function(err, response, body) {
 		        if(err) {

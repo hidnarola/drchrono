@@ -22,15 +22,17 @@
   "dependencies": {
     "assetmanager": "latest",
     "async": "latest",
-    "bower": "latest",
     "body-parser": "latest",
+    "bower": "latest",
     "compression": "latest",
     "connect-flash": "latest",
     "connect-modrewrite": "latest",
     "consolidate": "latest",
     "cookie-parser": "latest",
+    "dotenv": "^2.0.0",
     "errorhandler": "latest",
     "express": "latest",
+    "express-session": "latest",
     "forever": "latest",
     "gridfs-stream": "latest",
     "jsonwebtoken": "latest",
@@ -51,10 +53,9 @@
     "request": "latest",
     "serve-favicon": "latest",
     "shelljs": "latest",
+    "swagger-node-express": "latest",
     "swig": "latest",
-    "view-helpers": "latest",
-    "express-session": "latest",
-    "swagger-node-express": "latest"
+    "view-helpers": "latest"
   },
   "devDependencies": {
     "del": "latest",

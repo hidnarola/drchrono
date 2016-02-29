@@ -22,6 +22,8 @@ module.exports = function(Drchrono, app, auth, database) {
 
   app.route('/api/drchrono/get_access_token/:code')
     .get(drchrono.get_access_token);
+  app.route('/api/drchrono/get_access_token_refresh')
+    .get(drchrono.get_access_token_refresh);
 
   app.get('/api/drchrono/example/anyone', function(req, res, next) {
     res.send('Anyone can access this');

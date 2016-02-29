@@ -8,15 +8,7 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 	      name: 'drchrono'
 	    };
 
-		$scope.get_code = function(){
-			$http.get('/api/drchrono/get_access_url').success(function(response) {
-				$scope.url = response;
-			}).error(function(data) {
-				// console.log(data);
-			});
-	    };
-
-	    $scope.get_access_token = function(){
+	    /*$scope.get_access_token = function(){
 	    	var code = $location.search().code;
 	    	$http.get('/api/drchrono/get_access_token/' + code).success(function(response) {
 	    		if( response.hasOwnProperty('access_token') ){
@@ -30,10 +22,26 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 			}).error(function(data) {
 				// console.log(data);
 			});
+	    };*/
+
+	    $scope.is_token_exist = function(){
+	    	if( typeof($cookies.get('token')) != 'undefined' ){
+	    		return 1;
+	    	} else {
+	    		var api_request = new XMLHttpRequest();
+	    		api_request.open("GET", '/api/drchrono/get_access_token_refresh', false);
+				api_request.send();
+				if( api_request.status == 200 ){
+					var tokens = JSON.parse(api_request.response);
+					$cookies.put('token', tokens.access_token);
+					return 1;					
+				}
+	    	}
 	    };
 
 	    $scope.get_all_doctors = function(){
-	    	if( typeof($cookies.get('token')) != 'undefined' ){
+		 	var is_token_exist = $scope.is_token_exist();
+	    	if( is_token_exist ){
 			 	var api_request = new XMLHttpRequest();
 			 	var db_request = new XMLHttpRequest();
 				api_request.open("GET", '/api/drchrono/get_all_doctors', false);
@@ -58,24 +66,22 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 					}
 				}
 				$scope.doctors = doctor_list;
-	    	} else {
-				$location.path('get_code');
 	    	}
 	    };
 
 	    $scope.get_patient_list = function(doctor){
-	    	if( typeof($cookies.get('token')) != 'undefined' ){
+	    	var is_token_exist = $scope.is_token_exist();
+	    	if( is_token_exist ){
 				if(doctor){
 					var id = doctor.id;
 					$location.path('patient_list/' + id);
 				}
-			} else {
-				$location.path('get_code');
-	    	}
+			}
 	    };
 
 	    $scope.get_all_patients = function(){
-	    	if( typeof($cookies.get('token')) != 'undefined' ){
+	    	var is_token_exist = $scope.is_token_exist();
+	    	if( is_token_exist ){
 		    	var id = $stateParams.doctorId;
 		    	var api_request = new XMLHttpRequest();
 			 	var db_request = new XMLHttpRequest();
@@ -103,13 +109,12 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 					}
 				}
 				$scope.patients = patient_list;
-			} else {
-				$location.path('get_code');
-	    	}
+			}
 	    };
 
 	    $scope.get_patient_detail = function(patient){
-	    	if( typeof($cookies.get('token')) != 'undefined' ){
+	    	var is_token_exist = $scope.is_token_exist();
+	    	if( is_token_exist ){
 				if(patient){
 					var ids = patient.ids;
 					var ids = ids.split('|');
@@ -117,13 +122,12 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 					var patientId = ids[1];
 					$location.path('patient/' + doctorId + '/' + patientId);
 				}
-    		} else {
-				$location.path('get_code');
-	    	}
+    		}
 	    };
 
 	    $scope.patient_detail = function(){
-	    	if( typeof($cookies.get('token')) != 'undefined' ){
+	    	var is_token_exist = $scope.is_token_exist();
+	    	if( is_token_exist ){
 		    	var doctorId = $stateParams.doctorId;
 		    	var patientId = $stateParams.patientId;
 		    	$scope.doctorId = doctorId;
@@ -132,25 +136,21 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 				}).error(function(data) {
 					// console.log(data);
 				});
-			} else {
-				$location.path('get_code');
-	    	}
+			}
 	    };
 
 	    $scope.return_patient_list = function(doctorId){
-	    	if( typeof($cookies.get('token')) != 'undefined' ){
+	    	var is_token_exist = $scope.is_token_exist();
+	    	if( is_token_exist ){
 	    		$location.path('patient_list/' + doctorId);
-    		} else {
-				$location.path('get_code');
-	    	}
+    		}
 	    };
 
 	    $scope.return_doctor = function(doctorId){
-	    	if( typeof($cookies.get('token')) != 'undefined' ){
+	    	var is_token_exist = $scope.is_token_exist();
+	    	if( is_token_exist ){
 	    		$location.path('/');
-    		} else {
-				$location.path('get_code');
-	    	}
+    		}
 	    };
 	}
 ]);
