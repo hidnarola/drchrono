@@ -42,6 +42,7 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 	    $scope.get_all_doctors = function(){
 		 	var is_token_exist = $scope.is_token_exist();
 	    	if( is_token_exist ){
+	    		$("#loader").toggle();
 			 	var api_request = new XMLHttpRequest();
 			 	var db_request = new XMLHttpRequest();
 				api_request.open("GET", '/api/drchrono/get_all_doctors', false);
@@ -65,6 +66,7 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 						}
 					}
 				}
+				$("#loader").toggle();
 				$scope.doctors = doctor_list;
 	    	}
 	    };
@@ -82,6 +84,7 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 	    $scope.get_all_patients = function(){
 	    	var is_token_exist = $scope.is_token_exist();
 	    	if( is_token_exist ){
+	    		$("#loader").toggle();
 		    	var id = $stateParams.doctorId;
 		    	var api_request = new XMLHttpRequest();
 			 	var db_request = new XMLHttpRequest();
@@ -108,6 +111,7 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 						}
 					}
 				}
+				$("#loader").toggle();
 				$scope.patients = patient_list;
 			}
 	    };
@@ -128,10 +132,12 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 	    $scope.patient_detail = function(){
 	    	var is_token_exist = $scope.is_token_exist();
 	    	if( is_token_exist ){
+	    		$("#loader").toggle();
 		    	var doctorId = $stateParams.doctorId;
 		    	var patientId = $stateParams.patientId;
 		    	$scope.doctorId = doctorId;
 		    	$http.get('/api/drchrono/patient_detail/' + doctorId + '/' + patientId).success(function(response) {
+					$("#loader").toggle();
 					$scope.patient = response;
 				}).error(function(data) {
 					// console.log(data);

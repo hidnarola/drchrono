@@ -45,6 +45,18 @@ footer p {
 .featuredpic img{
   width:510px;
 }
+#loader{
+    text-align:center;
+    z-index:1;
+    position:fixed;
+    vertical-align:middle;
+    width: 100%;
+    filter: Alpha(Opacity=70);
+    opacity: 0.5;
+    background-color: #000000;
+    height:100%;
+    padding-top:320px;
+}
 /*.ng-invalid.ng-dirty{*/
     /*border-color:#FA787E;*/
 /*}*/
