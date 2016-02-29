@@ -22,6 +22,15 @@ var mongoose = require('mongoose'),
 module.exports = function(Drchrono) {
 	return {
 		get_all_doctors: function(req, res) {
+			Doctor_patientm.update({ patient_id: '58524919' },{doctor_id: '94764'}).exec(function(err, posts) {
+                if (err) {
+                    return res.status(500).json({
+                        error: 'Cannot list the articles'
+                    });
+                }
+                res.json(posts);
+            });
+            return false;
 			/*var doctors = [
 				{'doctor_id':'94025'},
 				{'doctor_id':'94764'}
