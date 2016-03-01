@@ -18,10 +18,18 @@ angular.module('mean.drchrono').controller('DrchronoController', ['$scope', '$st
 	    			async: false,
 	    			dataType: 'JSON',
 	    			success: function(response){
-		    			$cookies.put('token', response.access_token);
-						return 1;
+	    				if( response.hasOwnProperty('access_token') ){
+							var access_token = response.access_token;
+							$cookies.put('token', access_token);
+			    			$scope.wait_line = 'You will redirect to main site soon. Please wait for a while.';
+			    		} else {
+			    			$scope.wait_line = 'Sorry!! Your code is expired. Please try again.';
+			    		}
 	    			}
 	    		});
+	    		if( typeof($cookies.get('token')) != 'undefined' ){
+		    		return 1;
+		    	}
 	    	}
 	    };
 

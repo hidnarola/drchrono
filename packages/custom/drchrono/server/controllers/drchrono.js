@@ -127,7 +127,6 @@ module.exports = function(Drchrono) {
 		    });
 		},
 		get_access_token_refresh: function(req, res) {
-			console.log('here');
 			request({
 		        method: 'POST',
 		        url: 'https://drchrono.com/o/token/',
@@ -142,7 +141,6 @@ module.exports = function(Drchrono) {
 		        if(err) {
 		            res.json(err);
 		        } else {
-		        	//req.session.token = body.access_token;
         			res.json(body);
 		        }
 		    });
